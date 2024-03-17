@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   plan-infra-development:
-    uses: ./.github/terraform/plan.yaml
+    uses: ./.github/terraform/plan.yaml@ref
     with:
       TERRAFORM_VERSION: "1.7.5"
       TF_VAR_env: development
@@ -20,7 +20,7 @@ jobs:
       AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
   
   plan-infra-staging:
-    uses: ./.github/terraform/plan.yaml
+    uses: ./.github/terraform/plan.yaml@ref
     needs: plan-infra-development
     with:
       TERRAFORM_VERSION: "1.7.5"
