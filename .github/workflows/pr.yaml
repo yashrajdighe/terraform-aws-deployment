@@ -12,10 +12,10 @@ jobs:
       TF_VAR_env: development
       TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
     steps:
-    # - name: Configure AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v4
-    #   with:
-    #     role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
     - uses: actions/checkout@v3
     - uses: hashicorp/setup-terraform@v3
       with:
