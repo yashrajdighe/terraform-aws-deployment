@@ -1,0 +1,68 @@
+name: terraform-apply
+description: This action runs terraform apply
+
+inputs:
+  TF_VAR_env:
+    description: env
+    required: true
+  TERRAFORM_VERSION:
+    required: true
+    description: version of terraform cli
+  AWS_CLI_ASSUME_ROLE:
+    required: true
+    description: aws assume role arn
+  TF_STATE_BUCKET_NAME:
+    required: true
+    description: aws s3 bucket name to store tf states
+  TF_STATE_BUCKET_REGION:
+    required: true
+    description: aws s3 bucket region
+
+runs:
+  using: composite
+  steps:
+  - name: Configure AWS Credentials
+    id: aws-cli-creds
+    uses: aws-actions/configure-aws-credentials@v4
+    with:
+      aws-region: us-east-1
+      role-to-assume: ${{ inputs.AWS_CLI_ASSUME_ROLE }}
+      output-credentials: true
+  - name: set credentials
+    shell: bash
+    working-directory: .
+    run: |
+      echo "AWS_ACCESS_KEY_ID=${{ steps.aws-cli-creds.outputs.aws-access-key-id }}" >> $GITHUB_ENV
+      echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}" >> $GITHUB_ENV
+  - uses: actions/checkout@v3
+  - uses: hashicorp/setup-terraform@v3
+    with:
+      terraform_version: ${{ inputs.TERRAFORM_VERSION }}
+      terraform_wrapper: false
+  - name: Terraform fmt
+    id: fmt
+    shell: bash
+    run: terraform fmt -check
+    continue-on-error: true
+  - name: Terraform Init
+    shell: bash
+    id: init
+    run: |
+      terraform init \
+      -backend-config="bucket=${{ inputs.TF_STATE_BUCKET_NAME }}" \
+      -backend-config="key=terraform-aws-deployment/${{ inputs.TF_VAR_env }}/terraform.tfstate" \
+      -backend-config="region=${{ inputs.TF_STATE_BUCKET_REGION }}"
+  - name: Terraform Validate
+    shell: bash
+    id: validate
+    run: terraform validate -no-color
+  - name: Terraform Plan
+    shell: bash
+    id: plan
+    run: terraform plan -no-color
+    continue-on-error: true
+  - name: Terraform Apply
+    shell: bash
+    id: apply
+    run: terraform apply --auto-approve
+    continue-on-error: true
