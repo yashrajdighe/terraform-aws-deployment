@@ -6,6 +6,10 @@ concurrency:
   group: terraform
   cancel-in-progress: false
 
+defaults:
+  run:
+    working-directory: ./infra
+
 jobs:
   plan-infra-development:
     runs-on: ubuntu-latest
