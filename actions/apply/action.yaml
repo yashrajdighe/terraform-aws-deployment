@@ -52,7 +52,7 @@ runs:
     run: |
       terraform init \
       -backend-config="bucket=${{ inputs.TF_STATE_BUCKET_NAME }}" \
-      -backend-config="key=terraform-aws-deployment/${{ env.TF_VAR_env }}/terraform.tfstate" \
+      -backend-config="key=terraform-aws-deployment/$TF_VAR_env/terraform.tfstate" \
       -backend-config="region=${{ inputs.TF_STATE_BUCKET_REGION }}"
   - name: Terraform Validate
     shell: bash
