@@ -5,6 +5,9 @@ on:
 defaults:
   run:
     working-directory: ./infra
+concurrency:
+  group: terraform
+  cancel-in-progress: false
 jobs:
   plan-infra-development:
     runs-on: ubuntu-latest
