@@ -50,9 +50,9 @@ jobs:
       id: init
       run: |
         terraform init \
-        -backend-config="bucket=${{ inputs.TF_STATE_BUCKET_NAME }}" \
+        -backend-config="bucket=${{ secrets.TF_STATE_BUCKET_NAME }}" \
         -backend-config="key=terraform-aws-deployment/$TF_VAR_env/terraform.tfstate" \
-        -backend-config="region=${{ inputs.TF_STATE_BUCKET_REGION }}"
+        -backend-config="region=${{ secrets.TF_STATE_BUCKET_REGION }}"
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color

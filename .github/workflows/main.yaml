@@ -14,10 +14,10 @@ jobs:
     with:
       TERRAFORM_VERSION: "1.7.5"
       TF_VAR_env: development
-      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
-      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
     secrets:
       AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
+      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
+      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
   
   apply-infra-development:
     uses: ./.github/workflows/apply.yaml
@@ -25,10 +25,10 @@ jobs:
     with:
       TERRAFORM_VERSION: "1.7.5"
       TF_VAR_env: development
-      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
-      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
     secrets:
       AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
+      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
+      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
   
   plan-infra-staging:
     uses: ./.github/workflows/plan.yaml
@@ -36,10 +36,10 @@ jobs:
     with:
       TERRAFORM_VERSION: "1.7.5"
       TF_VAR_env: staging
-      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
-      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
     secrets:
       AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
+      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
+      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
   
   apply-infra-staging:
     uses: ./.github/workflows/apply.yaml
@@ -47,7 +47,7 @@ jobs:
     with:
       TERRAFORM_VERSION: "1.7.5"
       TF_VAR_env: staging
-      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
-      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
     secrets:
       AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
+      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
+      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
