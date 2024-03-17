@@ -13,7 +13,7 @@ jobs:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
     steps:
-      - uses: yashrajdighe/actions/plan@v1
+      - uses: yashrajdighe/terraform-aws-deployment/actions/plan@v1
         with:
           TERRAFORM_VERSION: "1.7.5"
           TF_VAR_env: development
@@ -28,7 +28,7 @@ jobs:
       contents: read 
     needs: plan-infra-development
     steps:
-      - uses: yashrajdighe/actions/plan@v1
+      - uses: yashrajdighe/terraform-aws-deployment/actions/plan@v1
         with:
           TERRAFORM_VERSION: "1.7.5"
           TF_VAR_env: staging
