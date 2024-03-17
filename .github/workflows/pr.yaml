@@ -8,26 +8,30 @@ concurrency:
 
 jobs:
   plan-infra-development:
-    uses: yashrajdighe/actions/plan@v1
+    runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
-    with:
-      TERRAFORM_VERSION: "1.7.5"
-      TF_VAR_env: development
-      AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
-      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
-      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
+    steps:
+      - uses: yashrajdighe/actions/plan@v1
+        with:
+          TERRAFORM_VERSION: "1.7.5"
+          TF_VAR_env: development
+          AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
+          TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
+          TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
   
   plan-infra-staging:
-    uses: yashrajdighe/actions/plan@v1
-    needs: plan-infra-development
+    runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
-    with:
-      TERRAFORM_VERSION: "1.7.5"
-      TF_VAR_env: staging
-      AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
-      TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
-      TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
+      contents: read 
+    needs: plan-infra-development
+    steps:
+      - uses: yashrajdighe/actions/plan@v1
+        with:
+          TERRAFORM_VERSION: "1.7.5"
+          TF_VAR_env: staging
+          AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
+          TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
+          TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
