@@ -44,6 +44,7 @@ runs:
     run: |
       ls
       pwd
+      date
   - name: Terraform fmt
     id: fmt
     shell: bash
