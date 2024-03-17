@@ -13,8 +13,6 @@ jobs:
     env:
       TF_VAR_env: development
       TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
-      # AWS_ACCESS_KEY_ID: ${{ steps.aws-cli-creds.outputs.aws-access-key-id }}
-      # AWS_SECRET_ACCESS_KEY: ${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}
     steps:
     - name: Configure AWS Credentials
       id: aws-cli-creds
@@ -33,14 +31,19 @@ jobs:
       with:
         terraform_version: "1.7.5"
         terraform_wrapper: false
-        cli_config_credentials_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
+        # cli_config_credentials_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
     - name: Terraform fmt
       id: fmt
       run: terraform fmt -check
       continue-on-error: true
     - name: Terraform Init
       id: init
-      run: terraform init
+      run: |
+        terraform init \
+        -backend-config="bucket=yashraj.dighe-us-east-1-terraform-states" \
+        -backend-config="key=terraform-aws-deployment/$TF_VAR_env/terraform.tfstate"
+        -backend-config="region=us-east-1" \
+        -backend-config="assume_role=arn:aws:iam::851725231363:role/gh-terraform-states"
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
