@@ -19,7 +19,7 @@ terraform {
 
 provider "aws" {
   region = "us-east-1"
-  assume_role {
-    role_arn = "arn:aws:iam::851725231363:role/github-repo-terraform-aws-deployment"
-  }
+  # assume_role {
+  #   role_arn = "arn:aws:iam::851725231363:role/github-repo-terraform-aws-deployment"
+  # }
 }
