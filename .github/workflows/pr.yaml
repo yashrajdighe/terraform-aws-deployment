@@ -43,7 +43,7 @@ jobs:
         -backend-config="bucket=yashraj.dighe-us-east-1-terraform-states" \
         -backend-config="key=terraform-aws-deployment/$TF_VAR_env/terraform.tfstate" \
         -backend-config="region=us-east-1" \
-        -backend-config="assume_role_arn=arn:aws:iam::851725231363:role/gh-terraform-states"
+        -backend-config="assume_role{role_arn=arn:aws:iam::851725231363:role/gh-terraform-states}"
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
