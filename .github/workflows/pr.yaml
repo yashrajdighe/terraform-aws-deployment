@@ -52,6 +52,7 @@ jobs:
       continue-on-error: true
   
   apply-infra-development:
+    needs: plan-infra-development
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
@@ -103,6 +104,7 @@ jobs:
       continue-on-error: true
 
   plan-infra-staging:
+    needs: apply-infra-development
     runs-on: ubuntu-latest
     environment: staging
     permissions:
@@ -150,6 +152,7 @@ jobs:
       continue-on-error: true
 
   apply-infra-staging:
+    needs: plan-infra-staging
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
