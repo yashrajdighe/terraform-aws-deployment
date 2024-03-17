@@ -61,14 +61,14 @@ jobs:
     environment: development
     env:
       TF_VAR_env: development
-      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
+      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
     steps:
     - name: Configure AWS Credentials
       id: aws-cli-creds
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
+        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
         output-credentials: true
     - name: set credentials
       working-directory: .
@@ -112,14 +112,14 @@ jobs:
       contents: read    # This is required for actions/checkout
     env:
       TF_VAR_env: staging
-      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
     steps:
     - name: Configure AWS Credentials
       id: aws-cli-creds
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
         output-credentials: true
     - name: set credentials
       working-directory: .
@@ -160,14 +160,14 @@ jobs:
     environment: staging
     env:
       TF_VAR_env: staging
-      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
     steps:
     - name: Configure AWS Credentials
       id: aws-cli-creds
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
         output-credentials: true
     - name: set credentials
       working-directory: .
