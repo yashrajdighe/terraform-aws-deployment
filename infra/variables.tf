@@ -1,5 +1,5 @@
 variable "env" {
 }
 
-variable "assume_role" {
-}
+# variable "assume_role" {
+# }
