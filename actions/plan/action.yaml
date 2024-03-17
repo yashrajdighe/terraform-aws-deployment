@@ -37,6 +37,7 @@ runs:
     run: |
       echo "AWS_ACCESS_KEY_ID=${{ steps.aws-cli-creds.outputs.aws-access-key-id }}" >> $GITHUB_ENV
       echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}" >> $GITHUB_ENV
+      echo "TF_VAR_env: ${{ inputs.TF_VAR_env }}" >> $GITHUB_ENV
   - uses: actions/checkout@v3
   - uses: hashicorp/setup-terraform@v3
     with:
@@ -64,8 +65,6 @@ runs:
     run: terraform validate -no-color
   - name: Terraform Plan
     shell: bash
-    env:
-      TF_VAR_env: ${{ inputs.TF_VAR_env }}
     working-directory: ${{ inputs.TF_WORKING_DIR }}
     id: plan
     run: terraform plan -no-color
