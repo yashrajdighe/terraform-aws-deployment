@@ -17,7 +17,7 @@ inputs:
   TF_STATE_BUCKET_REGION:
     required: true
     description: aws s3 bucket region
-  working-directory:
+  WORKING_DIRECTORY:
     required: true
     description: sets the working dir for tf
 
@@ -45,12 +45,12 @@ runs:
   - name: Terraform fmt
     id: fmt
     shell: bash
-    working-directory: ${{ inputs.working-directory }}
+    working-directory: ${{ inputs.WORKING_DIRECTORY }}
     run: terraform fmt -check
     continue-on-error: true
   - name: Terraform Init
     shell: bash
-    working-directory: ${{ inputs.working-directory }}
+    working-directory: ${{ inputs.WORKING_DIRECTORY }}
     id: init
     run: |
       terraform init \
@@ -59,12 +59,12 @@ runs:
       -backend-config="region=${{ inputs.TF_STATE_BUCKET_REGION }}"
   - name: Terraform Validate
     shell: bash
-    working-directory: ${{ inputs.working-directory }}
+    working-directory: ${{ inputs.WORKING_DIRECTORY }}
     id: validate
     run: terraform validate -no-color
   - name: Terraform Plan
     shell: bash
-    working-directory: ${{ inputs.working-directory }}
+    working-directory: ${{ inputs.WORKING_DIRECTORY }}
     id: plan
     run: terraform plan -no-color
     continue-on-error: true

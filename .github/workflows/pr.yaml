@@ -8,9 +8,6 @@ concurrency:
 
 jobs:
   plan-infra-development:
-    # defaults:
-    #   run:
-    #     working-directory: ./infra
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
@@ -24,7 +21,7 @@ jobs:
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
-          working-directory: ./infra
+          WORKING_DIRECTORY: ./infra
   
   plan-infra-staging:
     runs-on: ubuntu-latest
@@ -41,4 +38,4 @@ jobs:
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
-          working-directory: ./infra
+          WORKING_DIRECTORY: ./infra
