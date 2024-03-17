@@ -2,9 +2,6 @@ name: terraform-plan
 description: This action runs terraform plan
 
 inputs:
-  TF_VAR_env:
-    description: env
-    required: true
   TERRAFORM_VERSION:
     required: true
     description: version of terraform cli
@@ -20,6 +17,9 @@ inputs:
   TF_WORKING_DIR:
     required: true
     description: working dir for tf
+  TF_VAR_env:
+    required: true
+    description: env
 
 runs:
   using: composite
@@ -37,6 +37,7 @@ runs:
     run: |
       echo "AWS_ACCESS_KEY_ID=${{ steps.aws-cli-creds.outputs.aws-access-key-id }}" >> $GITHUB_ENV
       echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}" >> $GITHUB_ENV
+      echo "TF_VAR_env: ${{ inputs.TF_VAR_env }}" >> $GITHUB_ENV
   - uses: actions/checkout@v3
   - uses: hashicorp/setup-terraform@v3
     with:
