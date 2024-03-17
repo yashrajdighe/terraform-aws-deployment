@@ -21,7 +21,6 @@ jobs:
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
           TF_WORKING_DIR: ./infra
-        env:
           TF_VAR_env: development
   
   plan-infra-staging:
@@ -39,5 +38,4 @@ jobs:
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
           TF_WORKING_DIR: ./infra
-        env:
           TF_VAR_env: staging
