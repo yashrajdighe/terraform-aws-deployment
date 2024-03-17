@@ -1,13 +1,3 @@
-# terraform {
-#   cloud {
-#     organization = "yashrajdighe-githubaction"
-
-#     workspaces {
-#       name = "githubaction-aws"
-#     }
-#   }
-# }
-
 terraform {
   required_providers {
     aws = {
