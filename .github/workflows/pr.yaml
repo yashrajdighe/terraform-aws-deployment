@@ -41,7 +41,7 @@ jobs:
       run: |
         terraform init \
         -backend-config="bucket=yashraj.dighe-us-east-1-terraform-states" \
-        -backend-config="key=terraform.tfstate" \
+        -backend-config="key=terraform-aws-deployment/terraform.tfstate" \
         -backend-config="region=us-east-1"
     - name: Terraform Validate
       id: validate
