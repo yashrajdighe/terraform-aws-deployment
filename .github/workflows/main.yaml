@@ -21,7 +21,6 @@ jobs:
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
-          TF_WORKING_DIRECTORY: ./infra
   
   apply-infra-development:
     needs: plan-infra-development
@@ -39,7 +38,6 @@ jobs:
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
-          TF_WORKING_DIRECTORY: ./infra
   
   plan-infra-staging:
     needs: apply-infra-development
@@ -56,7 +54,6 @@ jobs:
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
-          TF_WORKING_DIRECTORY: ./infra
   
   apply-infra-staging:
     needs: plan-infra-staging
@@ -74,4 +71,3 @@ jobs:
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
-          TF_WORKING_DIRECTORY: ./infra
