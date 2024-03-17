@@ -24,7 +24,6 @@ defaults:
 jobs:
   plan:
     runs-on: ubuntu-latest
-    environment: ""
     env:
       TF_VAR_env: ${{ inputs.TF_VAR_env }}
     steps:
