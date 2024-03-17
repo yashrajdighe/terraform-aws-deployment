@@ -9,11 +9,12 @@ on:
       TERRAFORM_VERSION:
         type: string
         required: true
+    secrets:
+      AWS_CLI_ASSUME_ROLE:
+        required: true
       TF_STATE_BUCKET_NAME:
-        type: string
         required: true
       TF_STATE_BUCKET_REGION:
-        type: string
         required: true
 
 jobs:
