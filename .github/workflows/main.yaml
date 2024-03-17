@@ -8,7 +8,7 @@ concurrency:
 
 defaults:
   run:
-    working-directory: infra
+    working-directory: ./infra
 
 jobs:
   plan-infra-development:
