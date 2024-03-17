@@ -39,6 +39,11 @@ runs:
     with:
       terraform_version: ${{ inputs.TERRAFORM_VERSION }}
       terraform_wrapper: false
+  - name: test
+    shell: bash
+    run: |
+      ls
+      pwd
   - name: Terraform fmt
     id: fmt
     shell: bash
