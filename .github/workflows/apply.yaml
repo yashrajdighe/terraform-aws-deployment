@@ -20,9 +20,6 @@ on:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
     env:
       TF_VAR_env: ${{ inputs.TF_VAR_env }}
     steps:

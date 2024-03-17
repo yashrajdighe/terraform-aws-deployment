@@ -11,6 +11,9 @@ concurrency:
 jobs:
   plan-infra-development:
     uses: ./.github/workflows/plan.yaml
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
     with:
       TERRAFORM_VERSION: "1.7.5"
       TF_VAR_env: development
@@ -22,6 +25,9 @@ jobs:
   plan-infra-staging:
     uses: ./.github/workflows/plan.yaml
     needs: plan-infra-development
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
     with:
       TERRAFORM_VERSION: "1.7.5"
       TF_VAR_env: staging
