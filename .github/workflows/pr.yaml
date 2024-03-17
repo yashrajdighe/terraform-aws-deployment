@@ -13,8 +13,11 @@ jobs:
     env:
       TF_VAR_env: development
       TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+      AWS_ACCESS_KEY_ID: ${{ steps.aws-cli-creds.outputs.aws-access-key-id }}
+      AWS_SECRET_ACCESS_KEY: ${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}
     steps:
     - name: Configure AWS Credentials
+      id: aws-cli-creds
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1
