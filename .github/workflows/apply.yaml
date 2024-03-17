@@ -17,6 +17,10 @@ on:
       TF_STATE_BUCKET_REGION:
         required: true
 
+defaults:
+  run:
+    working-directory: ./infra
+
 jobs:
   apply:
     runs-on: ubuntu-latest

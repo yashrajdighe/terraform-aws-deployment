@@ -8,6 +8,7 @@ defaults:
 concurrency:
   group: terraform
   cancel-in-progress: false
+
 jobs:
   plan-infra-development:
     uses: ./.github/workflows/plan.yaml
