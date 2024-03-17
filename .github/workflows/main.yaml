@@ -26,6 +26,7 @@ jobs:
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
   
   apply-infra-development:
+    needs: plan-infra-development
     runs-on: ubuntu-latest
     environment: development
     permissions:
@@ -41,11 +42,11 @@ jobs:
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
   
   plan-infra-staging:
+    needs: apply-infra-development
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read 
-    needs: plan-infra-development
     steps:
       - uses: yashrajdighe/terraform-aws-deployment/actions/plan@main
         with:
@@ -56,12 +57,12 @@ jobs:
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
   
   apply-infra-staging:
+    needs: plan-infra-staging
     runs-on: ubuntu-latest
     environment: staging
     permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read 
-    needs: plan-infra-development
     steps:
       - uses: yashrajdighe/terraform-aws-deployment/actions/apply@main
         with:
