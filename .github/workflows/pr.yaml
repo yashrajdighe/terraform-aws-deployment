@@ -6,7 +6,9 @@ defaults:
 jobs:
   plan-infra:
     runs-on: ubuntu-latest
-    permissions: read-all
+    permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
     environment: development
     env:
       TF_VAR_env: development
