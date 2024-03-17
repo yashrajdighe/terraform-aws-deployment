@@ -1,0 +1,38 @@
+name: terraform-plan
+on: workflow_dispatch
+defaults:
+  run:
+    working-directory: ./infra
+jobs:
+  plan-infra:
+    runs-on: ubuntu-latest
+    permissions: read-all
+    environment: development
+    env:
+      TF_VAR_env: development
+      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+    steps:
+    # - name: Configure AWS Credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+    - uses: actions/checkout@v3
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.7.5"
+        terraform_wrapper: false
+        cli_config_credentials_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+    - name: Terraform Init
+      id: init
+      run: terraform init
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
