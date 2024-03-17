@@ -17,6 +17,9 @@ inputs:
   TF_STATE_BUCKET_REGION:
     required: true
     description: aws s3 bucket region
+  TF_WORKING_DIR:
+    required: true
+    description: working dir for tf
 
 runs:
   using: composite
@@ -42,6 +45,7 @@ runs:
   - name: Terraform fmt
     id: fmt
     shell: bash
+    working-directory: ${{ inputs.TF_WORKING_DIR }}
     run: terraform fmt -check
     continue-on-error: true
   - name: Terraform Init
@@ -54,15 +58,18 @@ runs:
       -backend-config="region=${{ inputs.TF_STATE_BUCKET_REGION }}"
   - name: Terraform Validate
     shell: bash
+    working-directory: ${{ inputs.TF_WORKING_DIR }}
     id: validate
     run: terraform validate -no-color
   - name: Terraform Plan
     shell: bash
+    working-directory: ${{ inputs.TF_WORKING_DIR }}
     id: plan
     run: terraform plan -no-color
     continue-on-error: true
   - name: Terraform Apply
     shell: bash
+    working-directory: ${{ inputs.TF_WORKING_DIR }}
     id: apply
     run: terraform apply --auto-approve
     continue-on-error: true
