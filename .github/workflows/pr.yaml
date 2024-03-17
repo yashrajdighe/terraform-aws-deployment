@@ -2,9 +2,6 @@ name: pr-terraform-workflow
 on:
   pull_request:
     branches: [ main ]
-defaults:
-  run:
-    working-directory: ./infra
 concurrency:
   group: terraform
   cancel-in-progress: false
