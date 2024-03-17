@@ -13,8 +13,8 @@ jobs:
     env:
       TF_VAR_env: development
       TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
-      AWS_ACCESS_KEY_ID: ${{ steps.aws-cli-creds.outputs.aws-access-key-id }}
-      AWS_SECRET_ACCESS_KEY: ${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}
+      # AWS_ACCESS_KEY_ID: ${{ steps.aws-cli-creds.outputs.aws-access-key-id }}
+      # AWS_SECRET_ACCESS_KEY: ${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}
     steps:
     - name: Configure AWS Credentials
       id: aws-cli-creds
@@ -23,6 +23,10 @@ jobs:
         aws-region: us-east-1
         role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
         output-credentials: true
+    - name: set credentials
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ steps.aws-cli-creds.outputs.aws-access-key-id }}" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}" >> $GITHUB_ENV
     - uses: actions/checkout@v3
     - uses: hashicorp/setup-terraform@v3
       with:
