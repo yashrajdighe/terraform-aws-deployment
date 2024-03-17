@@ -6,12 +6,11 @@ concurrency:
   group: terraform
   cancel-in-progress: false
 
-defaults:
-  run:
-    working-directory: ./infra
-
 jobs:
   plan-infra-development:
+    defaults:
+      run:
+        working-directory: ./infra
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
