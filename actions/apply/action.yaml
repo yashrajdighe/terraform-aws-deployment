@@ -2,9 +2,6 @@ name: terraform-apply
 description: This action runs terraform apply
 
 inputs:
-  TF_VAR_env:
-    description: env
-    required: true
   TERRAFORM_VERSION:
     required: true
     description: version of terraform cli
@@ -50,11 +47,12 @@ runs:
     continue-on-error: true
   - name: Terraform Init
     shell: bash
+    working-directory: ${{ inputs.TF_WORKING_DIR }}
     id: init
     run: |
       terraform init \
       -backend-config="bucket=${{ inputs.TF_STATE_BUCKET_NAME }}" \
-      -backend-config="key=terraform-aws-deployment/${{ inputs.TF_VAR_env }}/terraform.tfstate" \
+      -backend-config="key=terraform-aws-deployment/${{ env.TF_VAR_env }}/terraform.tfstate" \
       -backend-config="region=${{ inputs.TF_STATE_BUCKET_REGION }}"
   - name: Terraform Validate
     shell: bash

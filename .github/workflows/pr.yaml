@@ -17,7 +17,6 @@ jobs:
       - uses: yashrajdighe/terraform-aws-deployment/actions/plan@main
         with:
           TERRAFORM_VERSION: "1.7.5"
-          TF_VAR_env: development
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
@@ -36,10 +35,9 @@ jobs:
       - uses: yashrajdighe/terraform-aws-deployment/actions/plan@main
         with:
           TERRAFORM_VERSION: "1.7.5"
-          TF_VAR_env: staging
           AWS_CLI_ASSUME_ROLE: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
           TF_STATE_BUCKET_NAME: ${{ secrets.TF_STATE_BUCKET_NAME }}
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
           TF_WORKING_DIR: ./infra
         env:
-          TF_VAR_env: development
+          TF_VAR_env: staging

@@ -2,9 +2,6 @@ name: terraform-plan
 description: This action runs terraform plan
 
 inputs:
-  TF_VAR_env:
-    description: env
-    required: true
   TERRAFORM_VERSION:
     required: true
     description: version of terraform cli
@@ -55,7 +52,7 @@ runs:
     run: |
       terraform init \
       -backend-config="bucket=${{ inputs.TF_STATE_BUCKET_NAME }}" \
-      -backend-config="key=terraform-aws-deployment/${{ inputs.TF_VAR_env }}/terraform.tfstate" \
+      -backend-config="key=terraform-aws-deployment/${{ env.TF_VAR_env }}/terraform.tfstate" \
       -backend-config="region=${{ inputs.TF_STATE_BUCKET_REGION }}"
   - name: Terraform Validate
     shell: bash
