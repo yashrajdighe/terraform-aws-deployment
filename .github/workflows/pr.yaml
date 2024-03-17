@@ -1,25 +1,26 @@
 name: main-terraform-workflow
-on: workflow_dispatch
+on:
+  pull_request:
+    branches: [ main ]
 defaults:
   run:
     working-directory: ./infra
 jobs:
   plan-infra-development:
     runs-on: ubuntu-latest
-    environment: development
     permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
     env:
       TF_VAR_env: development
-      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
     steps:
     - name: Configure AWS Credentials
       id: aws-cli-creds
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE_DEVELOPMENT }}
         output-credentials: true
     - name: set credentials
       working-directory: .
@@ -51,75 +52,22 @@ jobs:
       run: terraform plan -no-color
       continue-on-error: true
   
-  apply-infra-development:
+  plan-infra-staging:
     needs: plan-infra-development
     runs-on: ubuntu-latest
     permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
-    environment: development
-    env:
-      TF_VAR_env: development
-      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
-    steps:
-    - name: Configure AWS Credentials
-      id: aws-cli-creds
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
-        output-credentials: true
-    - name: set credentials
-      working-directory: .
-      run: |
-        echo "AWS_ACCESS_KEY_ID=${{ steps.aws-cli-creds.outputs.aws-access-key-id }}" >> $GITHUB_ENV
-        echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}" >> $GITHUB_ENV
-    - uses: actions/checkout@v3
-    - uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: "1.7.5"
-        terraform_wrapper: false
-        # cli_config_credentials_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: true
-    - name: Terraform Init
-      id: init
-      run: |
-        terraform init \
-        -backend-config="bucket=yashraj.dighe-us-east-1-terraform-states" \
-        -backend-config="key=terraform-aws-deployment/$TF_VAR_env/terraform.tfstate" \
-        -backend-config="region=us-east-1"
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-      continue-on-error: true
-    - name: Terraform Apply
-      id: apply
-      run: terraform apply --auto-approve
-      continue-on-error: true
-
-  plan-infra-staging:
-    needs: apply-infra-development
-    runs-on: ubuntu-latest
-    environment: staging
-    permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
     env:
       TF_VAR_env: staging
-      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
     steps:
     - name: Configure AWS Credentials
       id: aws-cli-creds
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
+        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE_STAGING }}
         output-credentials: true
     - name: set credentials
       working-directory: .
@@ -149,56 +97,4 @@ jobs:
     - name: Terraform Plan
       id: plan
       run: terraform plan -no-color
-      continue-on-error: true
-
-  apply-infra-staging:
-    needs: plan-infra-staging
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout
-    environment: staging
-    env:
-      TF_VAR_env: staging
-      TF_VAR_assume_role: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
-    steps:
-    - name: Configure AWS Credentials
-      id: aws-cli-creds
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-region: us-east-1
-        role-to-assume: ${{ secrets.AWS_CLI_ASSUME_ROLE }}
-        output-credentials: true
-    - name: set credentials
-      working-directory: .
-      run: |
-        echo "AWS_ACCESS_KEY_ID=${{ steps.aws-cli-creds.outputs.aws-access-key-id }}" >> $GITHUB_ENV
-        echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws-cli-creds.outputs.aws-secret-access-key }}" >> $GITHUB_ENV
-    - uses: actions/checkout@v3
-    - uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: "1.7.5"
-        terraform_wrapper: false
-        # cli_config_credentials_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: true
-    - name: Terraform Init
-      id: init
-      run: |
-        terraform init \
-        -backend-config="bucket=yashraj.dighe-us-east-1-terraform-states" \
-        -backend-config="key=terraform-aws-deployment/$TF_VAR_env/terraform.tfstate" \
-        -backend-config="region=us-east-1"
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate -no-color
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -no-color
-      continue-on-error: true
-    - name: Terraform Apply
-      id: apply
-      run: terraform apply --auto-approve
       continue-on-error: true
