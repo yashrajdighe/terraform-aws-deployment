@@ -16,6 +16,9 @@ terraform {
     }
   }
   backend "s3" {
+    assume_role = {
+      role_arn = "arn:aws:iam::851725231363:role/gh-terraform-states"
+    }
   }
 }
 
