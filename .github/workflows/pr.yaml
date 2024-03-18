@@ -2,6 +2,8 @@ name: pr-terraform-workflow
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - "infra"
 concurrency:
   group: terraform
   cancel-in-progress: false

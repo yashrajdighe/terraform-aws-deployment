@@ -2,6 +2,8 @@ name: main-terraform-workflow
 on:
   push:
     branches: [ main ]
+    paths:
+      - "infra"
 concurrency:
   group: terraform
   cancel-in-progress: false
