@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "infra"
+      - "infra/**"
 concurrency:
   group: terraform
   cancel-in-progress: false
