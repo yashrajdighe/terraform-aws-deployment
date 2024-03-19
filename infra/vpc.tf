@@ -3,6 +3,6 @@ resource "aws_vpc" "main" {
   tags = {
     name       = local.resource_name
     env        = var.env
-    created_by = "terraform"
+    created_by = "terraform_github_actions"
   }
 }
