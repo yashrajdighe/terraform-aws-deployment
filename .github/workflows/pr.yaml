@@ -41,3 +41,15 @@ jobs:
           TF_STATE_BUCKET_REGION: ${{ secrets.TF_STATE_BUCKET_REGION }}
           TF_WORKING_DIR: ./infra
           TF_VAR_env: staging
+  
+  notification:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Post to a Slack channel
+      id: slack
+      uses: slackapi/slack-github-action@v1.25.0
+      with:
+        channel-id: '${{ secrets.SLACK_NOTIFICATION_CHANNEL_ID }}'
+        slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
